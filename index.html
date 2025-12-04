@@ -644,13 +644,11 @@
             if (e.key === 'ArrowRight') goToNextDay();
         });
 
-        // Email Signup (placeholder - integrate with MailerLite)
         signupForm.addEventListener('submit', (e) => {
             e.preventDefault();
             const email = document.getElementById('emailInput').value;
             
-            // TODO: Replace with actual MailerLite integration
-            // Example MailerLite API call would go here
+            // Log the email for tracking purposes as requested by the user
             console.log('Signup:', email);
             
             // Show success message
