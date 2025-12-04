@@ -21,20 +21,21 @@
 
     <style>
         :root {
-            --primary: #0f2744;
-            --primary-light: #1a4266;
+            --primary: #1e3a5f;
+            --primary-light: #2d5a8a;
             --accent: #d4af37;
             --accent-light: #f4d775;
-            --bg-start: #0a1929;
-            --bg-end: #1e3a5f;
+            --bg-start: #e8f4f8;
+            --bg-mid: #d4e8f0;
+            --bg-end: #c9dce8;
             --card-bg: #ffffff;
-            --card-shadow: rgba(0, 0, 0, 0.1);
+            --card-shadow: rgba(0, 0, 0, 0.08);
             --text: #1a1a1a;
             --text-muted: #6b7280;
             --success: #10b981;
             --locked: #9ca3af;
             --border: #e5e7eb;
-            --snowflake: rgba(255, 255, 255, 0.8);
+            --snowflake: rgba(100, 150, 180, 0.6);
         }
 
         * {
@@ -45,7 +46,7 @@
 
         body {
             font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
-            background: linear-gradient(135deg, var(--bg-start) 0%, var(--bg-end) 100%);
+            background: linear-gradient(135deg, var(--bg-start) 0%, var(--bg-mid) 50%, var(--bg-end) 100%);
             background-attachment: fixed;
             color: var(--text);
             line-height: 1.6;
@@ -470,18 +471,20 @@
         .footer {
             text-align: center;
             padding: 3rem 1.5rem;
-            color: rgba(255, 255, 255, 0.7);
+            color: var(--text-muted);
             font-size: 0.95rem;
         }
 
         .footer a {
-            color: var(--accent-light);
+            color: var(--primary);
             text-decoration: none;
             transition: color 0.3s ease;
+            font-weight: 500;
         }
 
         .footer a:hover {
             color: var(--accent);
+            text-decoration: underline;
         }
 
         /* Success Message */
@@ -540,7 +543,7 @@
     <!-- Header -->
     <header class="header">
         <h1>🎄 Tax KI <span>Advent</span></h1>
-        <p>24 Türchen voller praktischer KI-Tipps. Keine Theorie, nur das, was wirklich hilft.</p>
+        <p>24 Türchen voller praktischer KI-Tipps. Keine Theorie, nur das, was wirklich hilft. Mehr davon in der <a href="https://www.skool.com/tax-ki-community" target="_blank" rel="noopener noreferrer" style="color: var(--accent-light); text-decoration: underline;">Tax KI Community</a>.</p>
     </header>
 
     <!-- Email Signup -->
@@ -605,9 +608,34 @@
 
         createSnowflakes();
 
-        // Different emojis for different door states
-        const openedEmojis = ['🎁', '✨', '⭐', '🌟', '💡', '🎯', '🚀', '💎', '🔥', '⚡', '🎨', '🎪'];
-        const lockedEmojis = ['🔒', '🎁'];
+        // Unique emoji for each of the 24 doors
+        const doorEmojis = [
+            '🎁', // Day 1
+            '✨', // Day 2
+            '🌟', // Day 3
+            '💡', // Day 4
+            '🚀', // Day 5
+            '💎', // Day 6
+            '🔥', // Day 7
+            '⚡', // Day 8
+            '🎨', // Day 9
+            '🎯', // Day 10
+            '🎪', // Day 11
+            '🌈', // Day 12
+            '🦄', // Day 13
+            '🎭', // Day 14
+            '🎬', // Day 15
+            '🎸', // Day 16
+            '🎺', // Day 17
+            '🎮', // Day 18
+            '🎲', // Day 19
+            '🎰', // Day 20
+            '🏆', // Day 21
+            '👑', // Day 22
+            '💫', // Day 23
+            '⭐'  // Day 24
+        ];
+        const lockedEmoji = '🔒';
 
         // Advent Calendar Data
         let adventData = [];
@@ -662,14 +690,12 @@
                     door.classList.add('opened');
                 }
 
-                // Pick emoji
+                // Pick emoji - each day has its unique emoji
                 let emoji;
                 if (!isUnlocked) {
-                    emoji = lockedEmojis[Math.floor(Math.random() * lockedEmojis.length)];
-                } else if (wasOpened) {
-                    emoji = openedEmojis[(day - 1) % openedEmojis.length];
+                    emoji = lockedEmoji;
                 } else {
-                    emoji = '🎁';
+                    emoji = doorEmojis[day - 1]; // Use unique emoji for this day
                 }
 
                 door.innerHTML = `
@@ -702,7 +728,7 @@
                 doorElement.classList.add('opened');
                 const icon = doorElement.querySelector('.door-icon');
                 if (icon) {
-                    icon.textContent = openedEmojis[(day - 1) % openedEmojis.length];
+                    icon.textContent = doorEmojis[day - 1]; // Show unique emoji for this day
                 }
             }
 
