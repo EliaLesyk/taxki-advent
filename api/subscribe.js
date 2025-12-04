@@ -30,7 +30,7 @@ module.exports = async (req, res) => {
 
     // Send notification email to you with the new subscriber
     const result = await resend.emails.send({
-      from: 'elina@launchai.sh',
+      from: 'Tax KI Advent <elina@send.taxki.launchai.sh>',
       to: [notificationEmail],
       subject: '🎄 Neuer Tax KI Advent Abonnent',
       html: `
