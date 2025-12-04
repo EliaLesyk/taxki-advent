@@ -1,6 +1,8 @@
 {
+  "name": "taxki-adventskalender",
+  "version": "1.0.0",
+  "description": "Tax KI Advent Calendar - 24 KI-Tipps für Steuerkanzleien",
   "dependencies": {
-    "@supabase/supabase-js": "^2.39.0",
     "resend": "^2.0.0"
   }
 }

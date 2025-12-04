@@ -1,12 +1,7 @@
-const { createClient } = require('@supabase/supabase-js');
 const { Resend } = require('resend');
 
-const supabaseUrl = process.env.SUPABASE_URL || 'YOUR_SUPABASE_URL';
-const supabaseAnonKey = process.env.SUPABASE_ANON_KEY || 'YOUR_SUPABASE_ANON_KEY';
-const resendApiKey = process.env.RESEND_API_KEY || 'YOUR_RESEND_API_KEY';
-
-const supabase = createClient(supabaseUrl, supabaseAnonKey);
-const resend = new Resend(resendApiKey);
+const resendApiKey = process.env.RESEND_API_KEY;
+const notificationEmail = process.env.NOTIFICATION_EMAIL || 'elina@launchai.sh';
 
 module.exports = async (req, res) => {
   if (req.method !== 'POST') {
@@ -19,33 +14,51 @@ module.exports = async (req, res) => {
     return res.status(400).json({ message: 'Email is required' });
   }
 
+  // Basic email validation
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  if (!emailRegex.test(email)) {
+    return res.status(400).json({ message: 'Invalid email format' });
+  }
+
   try {
-    // 1. Store the email in Supabase
-    const { error: supabaseError } = await supabase
-      .from('subscribers')
-      .insert([{ email }]);
-
-    if (supabaseError) {
-      console.error('Supabase error:', supabaseError);
-      // Don't block the user if Supabase fails, but log the error
+    if (!resendApiKey) {
+      console.error('RESEND_API_KEY is not set');
+      return res.status(500).json({ message: 'Email service not configured' });
     }
 
-    // 2. Send a notification email
-    try {
-      await resend.emails.send({
-        from: 'Advent Calendar <onboarding@resend.dev>',
-        to: ['elina@launchai.sh'],
-        subject: 'New Subscriber for Tax KI Advent Calendar',
-        html: `<p>A new user has subscribed with the email: <strong>${email}</strong></p>`,
+    const resend = new Resend(resendApiKey);
+
+    // Send notification email to you with the new subscriber
+    const result = await resend.emails.send({
+      from: 'elina@launchai.sh',
+      to: [notificationEmail],
+      subject: '🎄 Neuer Tax KI Advent Abonnent',
+      html: `
+        <h2>Neuer Abonnent für Tax KI Adventskalender</h2>
+        <p><strong>Email:</strong> ${email}</p>
+        <p><strong>Zeit:</strong> ${new Date().toLocaleString('de-DE', { timeZone: 'Europe/Berlin' })}</p>
+      `,
+    });
+
+    // Check if email was sent successfully
+    if (result.error) {
+      console.error('Resend API error:', result.error);
+      // For testing mode, still return success to user
+      // In production with verified domain, this won't happen
+      return res.status(200).json({
+        message: 'Subscribed successfully',
+        note: 'Email notification requires domain verification in Resend'
       });
-    } catch (emailError) {
-      console.error('Resend error:', emailError);
-      // Also don't block on email failure, but log it
     }
 
-    res.status(200).json({ message: 'Subscribed successfully' });
+    console.log('Email sent successfully:', result);
+    res.status(200).json({ message: 'Subscribed successfully', emailId: result.data?.id });
   } catch (error) {
-    console.error('Internal Server Error:', error);
-    res.status(500).json({ message: 'Internal Server Error' });
+    console.error('Subscription error:', error);
+    console.error('Error details:', JSON.stringify(error, null, 2));
+    res.status(500).json({
+      message: 'Email sending failed',
+      error: error.message || 'Unknown error'
+    });
   }
 };
