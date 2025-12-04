@@ -1,7 +1,7 @@
 const { Resend } = require('resend');
 
 const resendApiKey = process.env.RESEND_API_KEY;
-const notificationEmail = process.env.NOTIFICATION_EMAIL || 'elina@launchai.sh';
+const notificationEmail = (process.env.NOTIFICATION_EMAIL || 'elina@launchai.sh').trim();
 
 module.exports = async (req, res) => {
   if (req.method !== 'POST') {

@@ -5,30 +5,36 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Tax KI Advent – 24 KI-Tipps für Steuerkanzleien</title>
     <meta name="description" content="Jeden Tag ein neuer KI-Tipp für Steuerkanzleien. Fortgeschrittene, sofort umsetzbare Tipps für den Kanzleialltag.">
-    
+
     <!-- Open Graph -->
     <meta property="og:title" content="Tax KI Advent – 24 KI-Tipps für Steuerkanzleien">
     <meta property="og:description" content="Jeden Tag ein neuer KI-Tipp. Jeden Tag mehr Effizienz.">
     <meta property="og:type" content="website">
-    
+
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-    
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+
+    <!-- Framer Motion -->
+    <script src="https://cdn.jsdelivr.net/npm/framer-motion@10/dist/framer-motion.js"></script>
+
     <style>
         :root {
-            --primary: #1e3a5f;
-            --primary-light: #2d5a8a;
-            --accent: #c9a227;
-            --accent-light: #e8c547;
-            --bg: #f8f9fa;
+            --primary: #0f2744;
+            --primary-light: #1a4266;
+            --accent: #d4af37;
+            --accent-light: #f4d775;
+            --bg-start: #0a1929;
+            --bg-end: #1e3a5f;
             --card-bg: #ffffff;
+            --card-shadow: rgba(0, 0, 0, 0.1);
             --text: #1a1a1a;
             --text-muted: #6b7280;
             --success: #10b981;
             --locked: #9ca3af;
             --border: #e5e7eb;
+            --snowflake: rgba(255, 255, 255, 0.8);
         }
 
         * {
@@ -39,23 +45,53 @@
 
         body {
             font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
-            background: var(--bg);
+            background: linear-gradient(135deg, var(--bg-start) 0%, var(--bg-end) 100%);
+            background-attachment: fixed;
             color: var(--text);
             line-height: 1.6;
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        /* Snowflakes */
+        .snowflake {
+            position: fixed;
+            top: -10px;
+            z-index: 9999;
+            user-select: none;
+            pointer-events: none;
+            color: var(--snowflake);
+            font-size: 1em;
+            animation: fall linear infinite;
+        }
+
+        @keyframes fall {
+            0% {
+                transform: translateY(-10px) rotate(0deg);
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(100vh) rotate(360deg);
+                opacity: 0.3;
+            }
         }
 
         /* Header */
         .header {
-            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%);
+            background: linear-gradient(135deg, rgba(15, 39, 68, 0.95) 0%, rgba(26, 66, 102, 0.95) 100%);
+            backdrop-filter: blur(10px);
             color: white;
-            padding: 3rem 1.5rem;
+            padding: 4rem 1.5rem 3rem;
             text-align: center;
+            position: relative;
         }
 
         .header h1 {
-            font-size: 2.5rem;
+            font-family: 'Playfair Display', serif;
+            font-size: 3rem;
             font-weight: 700;
-            margin-bottom: 0.5rem;
+            margin-bottom: 1rem;
+            letter-spacing: -0.5px;
         }
 
         .header h1 span {
@@ -63,36 +99,40 @@
         }
 
         .header p {
-            font-size: 1.1rem;
-            opacity: 0.9;
-            max-width: 500px;
+            font-size: 1.15rem;
+            opacity: 0.95;
+            max-width: 600px;
             margin: 0 auto;
+            font-weight: 400;
         }
 
         /* Email Signup */
         .signup-section {
-            background: var(--card-bg);
-            padding: 2rem 1.5rem;
+            background: rgba(255, 255, 255, 0.98);
+            backdrop-filter: blur(20px);
+            padding: 2.5rem 1.5rem;
             text-align: center;
-            border-bottom: 1px solid var(--border);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
         }
 
         .signup-section h2 {
-            font-size: 1.25rem;
+            font-size: 1.35rem;
             font-weight: 600;
-            margin-bottom: 0.5rem;
+            margin-bottom: 0.75rem;
+            color: var(--primary);
         }
 
         .signup-section p {
             color: var(--text-muted);
-            margin-bottom: 1rem;
-            font-size: 0.95rem;
+            margin-bottom: 1.25rem;
+            font-size: 1rem;
         }
 
         .signup-form {
             display: flex;
-            gap: 0.5rem;
-            max-width: 450px;
+            gap: 0.75rem;
+            max-width: 480px;
             margin: 0 auto;
             flex-wrap: wrap;
             justify-content: center;
@@ -100,74 +140,80 @@
 
         .signup-form input[type="email"] {
             flex: 1;
-            min-width: 200px;
-            padding: 0.75rem 1rem;
-            border: 1px solid var(--border);
-            border-radius: 8px;
+            min-width: 240px;
+            padding: 0.875rem 1.25rem;
+            border: 2px solid var(--border);
+            border-radius: 12px;
             font-size: 1rem;
             font-family: inherit;
+            transition: all 0.3s ease;
         }
 
         .signup-form input[type="email"]:focus {
             outline: none;
-            border-color: var(--primary);
-            box-shadow: 0 0 0 3px rgba(30, 58, 95, 0.1);
+            border-color: var(--accent);
+            box-shadow: 0 0 0 4px rgba(212, 175, 55, 0.15);
         }
 
         .signup-form button {
-            padding: 0.75rem 1.5rem;
-            background: var(--accent);
+            padding: 0.875rem 2rem;
+            background: linear-gradient(135deg, var(--accent) 0%, var(--accent-light) 100%);
             color: var(--primary);
             border: none;
-            border-radius: 8px;
+            border-radius: 12px;
             font-size: 1rem;
             font-weight: 600;
             cursor: pointer;
-            transition: background 0.2s;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 12px rgba(212, 175, 55, 0.3);
         }
 
         .signup-form button:hover {
-            background: var(--accent-light);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(212, 175, 55, 0.4);
         }
 
         /* Calendar Grid */
         .calendar-section {
-            max-width: 1000px;
+            max-width: 1100px;
             margin: 0 auto;
-            padding: 2rem 1.5rem;
+            padding: 3rem 1.5rem;
         }
 
         .calendar-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
-            gap: 1rem;
+            grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+            gap: 1.25rem;
         }
 
         /* Door Card */
         .door {
             aspect-ratio: 1;
-            background: var(--card-bg);
-            border-radius: 12px;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 16px;
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: center;
             cursor: pointer;
-            transition: all 0.2s;
-            border: 2px solid var(--border);
+            transition: all 0.3s ease;
+            border: 2px solid rgba(255, 255, 255, 0.2);
             position: relative;
             overflow: hidden;
+            box-shadow: 0 4px 12px var(--card-shadow);
         }
 
         .door:hover:not(.locked) {
-            transform: translateY(-4px);
-            box-shadow: 0 8px 24px rgba(0,0,0,0.1);
+            transform: translateY(-6px) scale(1.02);
+            box-shadow: 0 12px 32px rgba(0, 0, 0, 0.15);
             border-color: var(--accent);
         }
 
         .door.locked {
             cursor: not-allowed;
-            background: #f3f4f6;
+            background: rgba(255, 255, 255, 0.7);
+            opacity: 0.85;
         }
 
         .door.locked .door-number {
@@ -176,7 +222,7 @@
 
         .door.opened {
             background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%);
-            border-color: var(--primary);
+            border-color: var(--accent);
         }
 
         .door.opened .door-number {
@@ -189,22 +235,33 @@
 
         .door.today {
             border-color: var(--accent);
-            box-shadow: 0 0 0 3px rgba(201, 162, 39, 0.2);
+            box-shadow: 0 0 0 4px rgba(212, 175, 55, 0.2), 0 8px 24px rgba(0, 0, 0, 0.15);
+            animation: pulse 2s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% {
+                box-shadow: 0 0 0 4px rgba(212, 175, 55, 0.2), 0 8px 24px rgba(0, 0, 0, 0.15);
+            }
+            50% {
+                box-shadow: 0 0 0 8px rgba(212, 175, 55, 0.3), 0 12px 32px rgba(0, 0, 0, 0.2);
+            }
         }
 
         .door-number {
-            font-size: 2rem;
+            font-family: 'Playfair Display', serif;
+            font-size: 2.25rem;
             font-weight: 700;
             color: var(--primary);
         }
 
         .door-icon {
-            font-size: 1.5rem;
-            margin-top: 0.25rem;
+            font-size: 2rem;
+            margin-top: 0.5rem;
         }
 
         .door.locked .door-icon {
-            opacity: 0.5;
+            opacity: 0.6;
         }
 
         /* Content Modal */
@@ -215,7 +272,8 @@
             left: 0;
             right: 0;
             bottom: 0;
-            background: rgba(0,0,0,0.6);
+            background: rgba(0, 0, 0, 0.75);
+            backdrop-filter: blur(8px);
             z-index: 1000;
             padding: 1rem;
             overflow-y: auto;
@@ -229,81 +287,88 @@
 
         .modal {
             background: var(--card-bg);
-            border-radius: 16px;
-            max-width: 700px;
+            border-radius: 20px;
+            max-width: 750px;
             width: 100%;
             margin: 2rem auto;
             position: relative;
-            animation: modalIn 0.3s ease;
+            animation: modalIn 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
         }
 
         @keyframes modalIn {
             from {
                 opacity: 0;
-                transform: translateY(20px);
+                transform: translateY(30px) scale(0.95);
             }
             to {
                 opacity: 1;
-                transform: translateY(0);
+                transform: translateY(0) scale(1);
             }
         }
 
         .modal-header {
             background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%);
             color: white;
-            padding: 1.5rem 2rem;
-            border-radius: 16px 16px 0 0;
+            padding: 2rem 2.5rem;
+            border-radius: 20px 20px 0 0;
         }
 
         .modal-header .day-badge {
             display: inline-block;
             background: var(--accent);
             color: var(--primary);
-            padding: 0.25rem 0.75rem;
-            border-radius: 20px;
-            font-size: 0.85rem;
+            padding: 0.375rem 1rem;
+            border-radius: 24px;
+            font-size: 0.875rem;
             font-weight: 600;
-            margin-bottom: 0.5rem;
+            margin-bottom: 0.75rem;
         }
 
         .modal-header h2 {
-            font-size: 1.5rem;
+            font-family: 'Playfair Display', serif;
+            font-size: 1.75rem;
             font-weight: 700;
+            line-height: 1.3;
         }
 
         .modal-header .category {
-            opacity: 0.8;
-            font-size: 0.9rem;
-            margin-top: 0.25rem;
+            opacity: 0.85;
+            font-size: 0.95rem;
+            margin-top: 0.5rem;
         }
 
         .modal-close {
             position: absolute;
-            top: 1rem;
-            right: 1rem;
+            top: 1.5rem;
+            right: 1.5rem;
             background: rgba(255,255,255,0.2);
             border: none;
             color: white;
-            width: 36px;
-            height: 36px;
+            width: 40px;
+            height: 40px;
             border-radius: 50%;
-            font-size: 1.25rem;
+            font-size: 1.5rem;
             cursor: pointer;
-            transition: background 0.2s;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
 
         .modal-close:hover {
             background: rgba(255,255,255,0.3);
+            transform: rotate(90deg);
         }
 
         .modal-content {
-            padding: 2rem;
+            padding: 2.5rem;
         }
 
         .modal-content h3 {
-            font-size: 1.1rem;
+            font-size: 1.2rem;
             font-weight: 600;
-            margin: 1.5rem 0 0.75rem 0;
+            margin: 2rem 0 1rem 0;
             color: var(--primary);
         }
 
@@ -314,23 +379,25 @@
         .modal-content p {
             margin-bottom: 1rem;
             color: var(--text);
+            line-height: 1.7;
         }
 
         .modal-content ul, .modal-content ol {
-            margin: 0.75rem 0 1rem 1.5rem;
+            margin: 1rem 0 1.5rem 1.5rem;
         }
 
         .modal-content li {
-            margin-bottom: 0.5rem;
+            margin-bottom: 0.75rem;
+            line-height: 1.6;
         }
 
         .modal-content pre {
             background: #1e293b;
             color: #e2e8f0;
-            padding: 1rem;
-            border-radius: 8px;
+            padding: 1.25rem;
+            border-radius: 12px;
             overflow-x: auto;
-            margin: 1rem 0;
+            margin: 1.5rem 0;
             font-size: 0.9rem;
         }
 
@@ -341,18 +408,18 @@
         .modal-content table {
             width: 100%;
             border-collapse: collapse;
-            margin: 1rem 0;
+            margin: 1.5rem 0;
             font-size: 0.9rem;
         }
 
         .modal-content th, .modal-content td {
-            padding: 0.75rem;
+            padding: 0.875rem;
             border: 1px solid var(--border);
             text-align: left;
         }
 
         .modal-content th {
-            background: var(--bg);
+            background: #f8f9fa;
             font-weight: 600;
         }
 
@@ -369,28 +436,29 @@
         .modal-nav {
             display: flex;
             justify-content: space-between;
-            padding: 1rem 2rem 2rem;
+            padding: 1.5rem 2.5rem 2.5rem;
             border-top: 1px solid var(--border);
-            margin-top: 1rem;
         }
 
         .modal-nav button {
             display: flex;
             align-items: center;
             gap: 0.5rem;
-            padding: 0.75rem 1.25rem;
-            background: var(--bg);
+            padding: 0.875rem 1.5rem;
+            background: #f8f9fa;
             border: 1px solid var(--border);
-            border-radius: 8px;
+            border-radius: 12px;
             font-size: 0.95rem;
+            font-weight: 500;
             cursor: pointer;
-            transition: all 0.2s;
+            transition: all 0.3s ease;
         }
 
         .modal-nav button:hover:not(:disabled) {
             background: var(--primary);
             color: white;
             border-color: var(--primary);
+            transform: translateY(-2px);
         }
 
         .modal-nav button:disabled {
@@ -401,46 +469,19 @@
         /* Footer */
         .footer {
             text-align: center;
-            padding: 2rem 1.5rem;
-            color: var(--text-muted);
-            font-size: 0.9rem;
+            padding: 3rem 1.5rem;
+            color: rgba(255, 255, 255, 0.7);
+            font-size: 0.95rem;
         }
 
         .footer a {
-            color: var(--primary);
+            color: var(--accent-light);
             text-decoration: none;
+            transition: color 0.3s ease;
         }
 
         .footer a:hover {
-            text-decoration: underline;
-        }
-
-        /* Responsive */
-        @media (max-width: 600px) {
-            .header h1 {
-                font-size: 1.75rem;
-            }
-
-            .calendar-grid {
-                grid-template-columns: repeat(4, 1fr);
-                gap: 0.75rem;
-            }
-
-            .door-number {
-                font-size: 1.5rem;
-            }
-
-            .door-icon {
-                font-size: 1.25rem;
-            }
-
-            .modal-content {
-                padding: 1.5rem;
-            }
-
-            .modal-header {
-                padding: 1.25rem 1.5rem;
-            }
+            color: var(--accent);
         }
 
         /* Success Message */
@@ -448,6 +489,7 @@
             display: none;
             color: var(--success);
             font-weight: 500;
+            font-size: 1.05rem;
         }
 
         .signup-success.show {
@@ -457,24 +499,59 @@
         .signup-form.hidden {
             display: none;
         }
+
+        /* Responsive */
+        @media (max-width: 600px) {
+            .header h1 {
+                font-size: 2rem;
+            }
+
+            .calendar-grid {
+                grid-template-columns: repeat(4, 1fr);
+                gap: 0.875rem;
+            }
+
+            .door-number {
+                font-size: 1.75rem;
+            }
+
+            .door-icon {
+                font-size: 1.5rem;
+            }
+
+            .modal-content {
+                padding: 1.5rem;
+            }
+
+            .modal-header {
+                padding: 1.5rem;
+            }
+
+            .modal-nav {
+                padding: 1rem 1.5rem 1.5rem;
+            }
+        }
     </style>
 </head>
 <body>
+    <!-- Snowflakes -->
+    <div id="snowflakes"></div>
+
     <!-- Header -->
     <header class="header">
         <h1>🎄 Tax KI <span>Advent</span></h1>
-        <p>24 fortgeschrittene KI-Tipps für Steuerkanzleien. Jeden Tag ein neuer Tipp. Jeden Tag mehr Effizienz.</p>
+        <p>24 Türchen voller praktischer KI-Tipps. Keine Theorie, nur das, was wirklich hilft.</p>
     </header>
 
     <!-- Email Signup -->
     <section class="signup-section">
-        <h2>📬 Täglich per E-Mail erhalten</h2>
-        <p>Jeden Morgen ein neuer Tipp direkt in dein Postfach.</p>
+        <h2>✉️ Jeden Morgen ins Postfach</h2>
+        <p>Möchtest du? Dann trag dich hier ein und du bekommst jeden Tipp frisch geliefert.</p>
         <form class="signup-form" id="signupForm">
             <input type="email" placeholder="deine@email.de" required id="emailInput">
-            <button type="submit">Anmelden</button>
+            <button type="submit">Dabei sein</button>
         </form>
-        <p class="signup-success" id="signupSuccess">✓ Angemeldet! Du erhältst ab morgen die Tipps per E-Mail.</p>
+        <p class="signup-success" id="signupSuccess">✓ Super! Ab morgen gibts die Tipps direkt bei dir.</p>
     </section>
 
     <!-- Calendar Grid -->
@@ -497,28 +574,51 @@
                 <!-- Content loaded by JS -->
             </div>
             <div class="modal-nav">
-                <button id="prevDay">← Vorheriger Tag</button>
-                <button id="nextDay">Nächster Tag →</button>
+                <button id="prevDay">← Vorheriger</button>
+                <button id="nextDay">Nächster →</button>
             </div>
         </div>
     </div>
 
     <!-- Footer -->
     <footer class="footer">
-        <p>Mit 🎄 erstellt von <a href="https://elinalesyk.com" target="_blank">Elina Lesyk</a> | <a href="https://www.linkedin.com/in/elinalesyk/" target="_blank">LinkedIn</a></p>
+        <p>Gemacht mit 🎄 von <a href="https://elinalesyk.com" target="_blank">Elina Lesyk</a> | <a href="https://www.linkedin.com/in/elinalesyk/" target="_blank">LinkedIn</a></p>
     </footer>
 
     <script>
-        // Advent Calendar Data - This will be loaded from data.js
+        // Create snowflakes
+        function createSnowflakes() {
+            const snowflakeContainer = document.getElementById('snowflakes');
+            const snowflakeCount = 15; // Just a few!
+
+            for (let i = 0; i < snowflakeCount; i++) {
+                const snowflake = document.createElement('div');
+                snowflake.className = 'snowflake';
+                snowflake.innerHTML = '❄';
+                snowflake.style.left = Math.random() * 100 + '%';
+                snowflake.style.animationDuration = (Math.random() * 10 + 10) + 's';
+                snowflake.style.animationDelay = Math.random() * 5 + 's';
+                snowflake.style.fontSize = (Math.random() * 0.5 + 0.7) + 'em';
+                snowflakeContainer.appendChild(snowflake);
+            }
+        }
+
+        createSnowflakes();
+
+        // Different emojis for different door states
+        const openedEmojis = ['🎁', '✨', '⭐', '🌟', '💡', '🎯', '🚀', '💎', '🔥', '⚡', '🎨', '🎪'];
+        const lockedEmojis = ['🔒', '🎁'];
+
+        // Advent Calendar Data
         let adventData = [];
-        
+
         // Current state
         let currentDay = null;
         const today = new Date();
-        const isDecember = today.getMonth() === 11; // December = 11
+        const isDecember = today.getMonth() === 11;
         const currentDate = today.getDate();
         const maxOpenDay = isDecember ? Math.min(currentDate, 24) : 0;
-        
+
         // For testing: set to true to unlock all doors
         const DEBUG_MODE = false;
         const effectiveMaxDay = DEBUG_MODE ? 24 : maxOpenDay;
@@ -539,37 +639,48 @@
         // Initialize Calendar
         function initCalendar() {
             calendarGrid.innerHTML = '';
-            
+
             for (let day = 1; day <= 24; day++) {
                 const door = document.createElement('div');
                 door.className = 'door';
                 door.dataset.day = day;
-                
+
                 const isUnlocked = day <= effectiveMaxDay;
                 const isToday = isDecember && day === currentDate;
-                
+
                 if (!isUnlocked) {
                     door.classList.add('locked');
                 }
-                
+
                 if (isToday) {
                     door.classList.add('today');
                 }
-                
-                // Check if already opened (stored in localStorage)
-                if (localStorage.getItem(`advent_opened_${day}`)) {
+
+                // Check if already opened
+                const wasOpened = localStorage.getItem(`advent_opened_${day}`);
+                if (wasOpened) {
                     door.classList.add('opened');
                 }
-                
+
+                // Pick emoji
+                let emoji;
+                if (!isUnlocked) {
+                    emoji = lockedEmojis[Math.floor(Math.random() * lockedEmojis.length)];
+                } else if (wasOpened) {
+                    emoji = openedEmojis[(day - 1) % openedEmojis.length];
+                } else {
+                    emoji = '🎁';
+                }
+
                 door.innerHTML = `
                     <span class="door-number">${day}</span>
-                    <span class="door-icon">${isUnlocked ? '🎁' : '🔒'}</span>
+                    <span class="door-icon">${emoji}</span>
                 `;
-                
+
                 if (isUnlocked) {
                     door.addEventListener('click', () => openDoor(day));
                 }
-                
+
                 calendarGrid.appendChild(door);
             }
         }
@@ -578,30 +689,37 @@
         function openDoor(day) {
             currentDay = day;
             const data = adventData.find(d => d.day === day);
-            
+
             if (!data) {
                 console.error('No data for day', day);
                 return;
             }
-            
+
             // Mark as opened
             localStorage.setItem(`advent_opened_${day}`, 'true');
-            document.querySelector(`.door[data-day="${day}"]`)?.classList.add('opened');
-            
+            const doorElement = document.querySelector(`.door[data-day="${day}"]`);
+            if (doorElement && !doorElement.classList.contains('opened')) {
+                doorElement.classList.add('opened');
+                const icon = doorElement.querySelector('.door-icon');
+                if (icon) {
+                    icon.textContent = openedEmojis[(day - 1) % openedEmojis.length];
+                }
+            }
+
             // Update modal
             modalDay.textContent = `Tag ${day}`;
             modalTitle.textContent = data.title;
             modalCategory.textContent = data.category;
             modalContent.innerHTML = data.website_content;
-            
+
             // Update navigation buttons
             prevDayBtn.disabled = day <= 1;
             nextDayBtn.disabled = day >= effectiveMaxDay;
-            
+
             // Show modal
             modalOverlay.classList.add('active');
             document.body.style.overflow = 'hidden';
-            
+
             // Update URL
             history.pushState(null, '', `/${day}`);
         }
@@ -638,7 +756,7 @@
         // Keyboard navigation
         document.addEventListener('keydown', (e) => {
             if (!modalOverlay.classList.contains('active')) return;
-            
+
             if (e.key === 'Escape') closeModal();
             if (e.key === 'ArrowLeft') goToPrevDay();
             if (e.key === 'ArrowRight') goToNextDay();
@@ -651,7 +769,7 @@
             const submitButton = signupForm.querySelector('button');
             const originalButtonText = submitButton.textContent;
 
-            submitButton.textContent = 'Anmelden...';
+            submitButton.textContent = 'Einen Moment...';
             submitButton.disabled = true;
 
             fetch('/api/subscribe', {
@@ -674,7 +792,7 @@
             })
             .catch(err => {
                 console.error('Signup error:', err);
-                alert('Anmeldung fehlgeschlagen. Bitte versuchen Sie es später erneut.');
+                alert('Hm, da lief was schief. Versuch es nochmal oder schreib mir direkt!');
                 submitButton.textContent = originalButtonText;
                 submitButton.disabled = false;
             });
@@ -686,15 +804,14 @@
             signupSuccess.classList.add('show');
         }
 
-        // Handle direct URL access (e.g., /5)
+        // Handle direct URL access
         function handleDirectUrl() {
             const path = window.location.pathname;
             const match = path.match(/^\/(\d+)$/);
-            
+
             if (match) {
                 const day = parseInt(match[1]);
                 if (day >= 1 && day <= effectiveMaxDay) {
-                    // Wait for data to load, then open
                     setTimeout(() => openDoor(day), 100);
                 }
             }
@@ -710,7 +827,6 @@
             })
             .catch(err => {
                 console.error('Error loading advent data:', err);
-                // Fallback: try inline data if fetch fails
                 if (typeof ADVENT_DATA !== 'undefined') {
                     adventData = ADVENT_DATA;
                     initCalendar();
