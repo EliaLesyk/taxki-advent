@@ -646,17 +646,38 @@
 
         signupForm.addEventListener('submit', (e) => {
             e.preventDefault();
-            const email = document.getElementById('emailInput').value;
-            
-            // Log the email for tracking purposes as requested by the user
-            console.log('Signup:', email);
-            
-            // Show success message
-            signupForm.classList.add('hidden');
-            signupSuccess.classList.add('show');
-            
-            // Store in localStorage to remember
-            localStorage.setItem('advent_subscribed', email);
+            const emailInput = document.getElementById('emailInput');
+            const email = emailInput.value;
+            const submitButton = signupForm.querySelector('button');
+            const originalButtonText = submitButton.textContent;
+
+            submitButton.textContent = 'Anmelden...';
+            submitButton.disabled = true;
+
+            fetch('/api/subscribe', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ email }),
+            })
+            .then(res => {
+                if (res.ok) {
+                    return res.json();
+                }
+                throw new Error('Subscription failed.');
+            })
+            .then(() => {
+                signupForm.classList.add('hidden');
+                signupSuccess.classList.add('show');
+                localStorage.setItem('advent_subscribed', email);
+            })
+            .catch(err => {
+                console.error('Signup error:', err);
+                alert('Anmeldung fehlgeschlagen. Bitte versuchen Sie es später erneut.');
+                submitButton.textContent = originalButtonText;
+                submitButton.disabled = false;
+            });
         });
 
         // Check if already subscribed
